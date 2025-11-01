@@ -1,0 +1,8 @@
+export const MyTicketsPage = () => {
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="mb-4 text-3xl font-bold">My Tickets</h1>
+      <p className="text-gray-600">Coming soon in Week 3...</p>
+    </div>
+  );
+};

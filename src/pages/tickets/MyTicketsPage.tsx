@@ -13,17 +13,19 @@ export const MyTicketsPage = () => {
   const {
     tickets,
     total,
-    currentPage,
+    skip,
+    limit,
     isLoading,
     error,
     fetchMyTickets,
     setStatusFilter,
-    nextPage,
-    prevPage,
-    setPage,
   } = useTicketsStore();
 
   const [activeTab, setActiveTab] = useState<TabType>('all');
+
+  // Calculate current page from skip and limit
+  const currentPage = Math.floor(skip / limit) + 1;
+  const totalPages = Math.ceil(total / limit);
 
   // Fetch tickets on mount
   useEffect(() => {
@@ -38,6 +40,12 @@ export const MyTicketsPage = () => {
     } else {
       setStatusFilter(tab as TicketStatus);
     }
+  };
+
+  // Handle page change
+  const handlePageChange = (page: number) => {
+    const newSkip = (page - 1) * limit;
+    fetchMyTickets({ skip: newSkip });
   };
 
   // Count tickets by status
@@ -59,7 +67,7 @@ export const MyTicketsPage = () => {
   ];
 
   // Handle ticket expiration
-  const handleTicketExpire = (ticketId: string) => {
+  const handleTicketExpire = () => {
     // Refresh tickets after expiration
     fetchMyTickets();
   };
@@ -163,8 +171,10 @@ export const MyTicketsPage = () => {
                 ? "You haven't reserved any tickets yet. Browse events to get started!"
                 : `You don't have any ${activeTab} tickets at the moment.`
             }
-            actionLabel="Browse Events"
-            actionHref="/events"
+            action={{
+              label: 'Browse Events',
+              onClick: () => window.location.href = '/events',
+            }}
           />
         ) : (
           /* Tickets Grid */
@@ -180,14 +190,12 @@ export const MyTicketsPage = () => {
             </div>
 
             {/* Pagination */}
-            {total > 20 && (
+            {total > limit && (
               <div className="mt-8">
                 <Pagination
                   currentPage={currentPage}
-                  totalPages={Math.ceil(total / 20)}
-                  onPageChange={setPage}
-                  onPrevious={prevPage}
-                  onNext={nextPage}
+                  totalPages={totalPages}
+                  onPageChange={handlePageChange}
                   isLoading={isLoading}
                 />
               </div>

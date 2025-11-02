@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 
-export interface GeolocationPosition {
+export interface GeoPosition {
   latitude: number;
   longitude: number;
   accuracy: number;
@@ -17,7 +17,7 @@ interface UseGeolocationOptions {
 }
 
 interface UseGeolocationResult {
-  position: GeolocationPosition | null;
+  position: GeoPosition | null;
   error: string | null;
   isLoading: boolean;
   permissionState: PermissionState;
@@ -40,7 +40,7 @@ export function useGeolocation(
     watch = false,
   } = options;
 
-  const [position, setPosition] = useState<GeolocationPosition | null>(null);
+  const [position, setPosition] = useState<GeoPosition | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [permissionState, setPermissionState] = useState<PermissionState>('prompt');

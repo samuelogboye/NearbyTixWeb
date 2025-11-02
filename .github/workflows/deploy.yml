@@ -1,0 +1,67 @@
+name: Build and Deploy to Server
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  build-and-push-to-dockerhub:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Log in to Docker Hub
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # Build & Push Docker Image
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: |
+            samuelogboye/nearbytixweb:latest
+            samuelogboye/nearbytixweb:${{ github.sha }}
+          platforms: linux/amd64
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build-and-push-to-dockerhub  # ensures deploy runs only after image is pushed
+
+    steps:
+      - name: Deploy to Server Droplet
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.DROPLET_HOST }}
+          username: ${{ secrets.DROPLET_USER }}
+          key: ${{ secrets.DROPLET_SSH_KEY }}
+          script: |
+            APP_DIR=/root/NearbyTixWeb
+
+            echo "Navigating to app directory..."
+            if [ ! -d "$APP_DIR" ]; then
+              echo "App not found — cloning fresh copy..."
+              git clone https://github.com/samuelogboye/NearbyTixWeb.git $APP_DIR
+            fi
+
+            cd $APP_DIR
+
+            echo "Fetching latest code changes..."
+            git fetch origin main
+            git reset --hard origin/main
+
+            echo "Pulling latest Docker image..."
+            docker compose pull
+
+            echo "Recreating containers..."
+            docker compose up -d
+
+            echo "Cleaning up old images..."
+            docker image prune -af

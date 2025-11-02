@@ -18,6 +18,36 @@ export const TicketCard = ({
 }: TicketCardProps) => {
   const isReserved = ticket.status === 'reserved';
   const isPaid = ticket.status === 'paid';
+  console.log("ticket", ticket)
+  // Defensive check - ensure event data is available
+  if (!ticket.event) {
+    return (
+      <Card variant="bordered" className="hover:shadow-lg transition-shadow">
+        <div className="space-y-4">
+          <div className="flex items-start justify-between">
+            <div className="flex-1">
+              <h3 className="text-lg font-semibold text-gray-900">
+                Event Information Unavailable
+              </h3>
+              <p className="text-sm text-gray-600 mt-1">
+                Ticket ID: {ticket.id.substring(0, 8)}...
+              </p>
+            </div>
+            <TicketStatusBadge status={ticket.status} />
+          </div>
+          <p className="text-sm text-gray-500">
+            Unable to load event details. Please try refreshing the page.
+          </p>
+          <Link
+            to={`/tickets/${ticket.id}`}
+            className="block text-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-medium text-sm"
+          >
+            View Details
+          </Link>
+        </div>
+      </Card>
+    );
+  }
 
   return (
     <Card variant="bordered" className="hover:shadow-lg transition-shadow">
@@ -54,29 +84,33 @@ export const TicketCard = ({
         </div>
 
         {/* Location */}
-        <div className="flex items-center gap-2 text-sm text-gray-700">
-          <svg
-            className="h-4 w-4 text-gray-400"
-            fill="none"
-            strokeWidth="2"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"
-            />
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"
-            />
-          </svg>
-          <span>
-            {ticket.event.city}, {ticket.event.state}
-          </span>
-        </div>
+        {(ticket.event.city || ticket.event.state) && (
+          <div className="flex items-center gap-2 text-sm text-gray-700">
+            <svg
+              className="h-4 w-4 text-gray-400"
+              fill="none"
+              strokeWidth="2"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"
+              />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"
+              />
+            </svg>
+            <span>
+              {ticket.event.city && ticket.event.state
+                ? `${ticket.event.city}, ${ticket.event.state}`
+                : ticket.event.city || ticket.event.state}
+            </span>
+          </div>
+        )}
 
         {/* Countdown Timer for Reserved Tickets */}
         {isReserved && showCountdown && ticket.expires_at && (

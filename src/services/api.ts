@@ -21,6 +21,7 @@ import type {
 
 class ApiClient {
   private client: AxiosInstance;
+  private onUnauthorized?: () => void;
 
   constructor() {
     this.client = axios.create({
@@ -51,10 +52,9 @@ class ApiClient {
       async (error: AxiosError<ErrorResponse>) => {
         // Handle 401 Unauthorized - token expired or invalid
         if (error.response?.status === HTTP_STATUS.UNAUTHORIZED) {
-          this.clearAuth();
-          // Redirect to login
-          if (typeof window !== 'undefined') {
-            window.location.href = '/login';
+          // Call the registered callback instead of clearing auth directly
+          if (this.onUnauthorized) {
+            this.onUnauthorized();
           }
         }
 
@@ -64,20 +64,18 @@ class ApiClient {
   }
 
   /**
+   * Register callback to handle unauthorized errors
+   */
+  setUnauthorizedCallback(callback: () => void): void {
+    this.onUnauthorized = callback;
+  }
+
+  /**
    * Get stored auth token
    */
   private getToken(): string | null {
     if (typeof window === 'undefined') return null;
     return localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN);
-  }
-
-  /**
-   * Clear authentication data
-   */
-  private clearAuth(): void {
-    if (typeof window === 'undefined') return;
-    localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
-    localStorage.removeItem(STORAGE_KEYS.USER);
   }
 
   /**

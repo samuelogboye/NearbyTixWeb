@@ -4,6 +4,16 @@ FROM node:20-alpine AS builder
 # Set working directory
 WORKDIR /app
 
+# Accept build-time arguments
+ARG VITE_API_BASE_URL
+ARG VITE_TICKET_EXPIRATION_SECONDS
+ARG VITE_APP_ENV
+
+# Expose them to Vite build
+ENV VITE_API_BASE_URL=${VITE_API_BASE_URL}
+ENV VITE_TICKET_EXPIRATION_SECONDS=${VITE_TICKET_EXPIRATION_SECONDS}
+ENV VITE_APP_ENV=${VITE_APP_ENV}
+
 # Copy package files and install dependencies
 COPY package*.json ./
 RUN npm ci --legacy-peer-deps

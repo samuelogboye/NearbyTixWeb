@@ -79,6 +79,8 @@ export interface Ticket {
   paid_at: string | null;
   created_at: string;
   event: EventSummary;
+  event_title?: string;
+  event_start_time?: string;
   user: UserSummary;
 }
 

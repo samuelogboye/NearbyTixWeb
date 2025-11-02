@@ -21,6 +21,7 @@ describe('AuthStore', () => {
     latitude: 40.7128,
     longitude: -74.0060,
     created_at: '2024-01-01T00:00:00Z',
+    updated_at: '2024-01-01T00:00:00Z',
   };
 
   const mockAuthResponse: AuthResponse = {

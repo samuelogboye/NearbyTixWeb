@@ -1,7 +1,7 @@
 import { ReactElement, ReactNode } from 'react';
 import { render, RenderOptions } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
-import { vi } from 'vitest';
+import { vi, beforeAll, afterAll } from 'vitest';
 
 /**
  * Custom render with router wrapper
@@ -83,12 +83,15 @@ export function setupGlobalMocks() {
   // Mock window.location only if needed
   if (typeof window !== 'undefined' && !window.location.href) {
     delete (window as { location?: unknown }).location;
-    window.location = {
+    (window as { location: unknown }).location = {
       href: '',
       pathname: '/',
       search: '',
       hash: '',
-    } as Location;
+      assign: vi.fn(),
+      reload: vi.fn(),
+      replace: vi.fn(),
+    } as Partial<Location>;
   }
 }
 

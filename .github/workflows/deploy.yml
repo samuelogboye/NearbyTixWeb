@@ -30,6 +30,10 @@ jobs:
             samuelogboye/nearbytixweb:latest
             samuelogboye/nearbytixweb:${{ github.sha }}
           platforms: linux/amd64
+          build-args: |
+            VITE_API_BASE_URL=${{ secrets.VITE_API_BASE_URL }}
+            VITE_TICKET_EXPIRATION_SECONDS=${{ secrets.VITE_TICKET_EXPIRATION_SECONDS }}
+            VITE_APP_ENV=${{ secrets.VITE_APP_ENV }}
 
   deploy:
     runs-on: ubuntu-latest

@@ -110,10 +110,16 @@ export const EventCard = ({ event }: EventCardProps) => {
         {/* Footer */}
         <div className="flex items-center justify-between border-t border-gray-100 pt-4">
           <div className="text-sm">
-            <span className="font-semibold text-gray-900">{event.tickets_available}</span>
-            <span className="text-gray-600">
-              {` ticket${event.tickets_available === 1 ? '' : 's'} available`}
-            </span>
+            {event.tickets_available === 0 ? (
+              <span className="text-gray-600">No tickets available</span>
+            ) : (
+              <>
+                <span className="font-semibold text-gray-900">{event.tickets_available}</span>
+                <span className="text-gray-600">
+                  {' '}ticket{event.tickets_available === 1 ? '' : 's'} available
+                </span>
+              </>
+            )}
           </div>
           <Link to={eventUrl}>
             <Button size="sm" disabled={event.is_sold_out}>

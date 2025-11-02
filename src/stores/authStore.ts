@@ -32,12 +32,15 @@ export const useAuthStore = create<AuthState>((set) => ({
     try {
       const response = await apiClient.login(credentials);
 
-      // Store token and user
+      // Store token first
       localStorage.setItem(STORAGE_KEYS.ACCESS_TOKEN, response.access_token);
-      localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(response.user));
+
+      // Fetch full user data from /me endpoint
+      const user = await apiClient.getMe();
+      localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(user));
 
       set({
-        user: response.user,
+        user,
         token: response.access_token,
         isAuthenticated: true,
         isLoading: false,
@@ -58,12 +61,15 @@ export const useAuthStore = create<AuthState>((set) => ({
     try {
       const response = await apiClient.register(data);
 
-      // Store token and user
+      // Store token first
       localStorage.setItem(STORAGE_KEYS.ACCESS_TOKEN, response.access_token);
-      localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(response.user));
+
+      // Fetch full user data from /me endpoint
+      const user = await apiClient.getMe();
+      localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(user));
 
       set({
-        user: response.user,
+        user,
         token: response.access_token,
         isAuthenticated: true,
         isLoading: false,

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useAuthStore } from '@stores/authStore';
 import { Button } from '@components/common/Button';
+import { MainLayout } from '@components/layout/MainLayout';
 import { ROUTES } from '@constants/index';
 
 export const HomePage = () => {
@@ -8,7 +9,8 @@ export const HomePage = () => {
   const user = useAuthStore((state) => state.user);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-50 to-secondary-50">
+    <MainLayout hideFooter={false}>
+      <div className="bg-gradient-to-br from-primary-50 to-secondary-50">
       <div className="container mx-auto px-4 py-16">
         <div className="text-center">
           <h1 className="mb-6 text-6xl font-bold text-primary-600">NearbyTix</h1>
@@ -103,6 +105,7 @@ export const HomePage = () => {
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </MainLayout>
   );
 };

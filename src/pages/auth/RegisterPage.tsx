@@ -8,6 +8,7 @@ import { registerSchema, type RegisterFormData } from '@utils/validation';
 import { Button } from '@components/common/Button';
 import { Input } from '@components/common/Input';
 import { Card } from '@components/common/Card';
+import { MainLayout } from '@components/layout/MainLayout';
 import { ROUTES } from '@constants/index';
 
 export const RegisterPage = () => {
@@ -77,7 +78,8 @@ export const RegisterPage = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
+    <MainLayout hideFooter>
+      <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
       <div className="w-full max-w-md space-y-8">
         <div className="text-center">
           <h1 className="text-4xl font-bold text-primary-600">NearbyTix</h1>
@@ -166,6 +168,7 @@ export const RegisterPage = () => {
           By creating an account, you agree to our Terms of Service and Privacy Policy
         </p>
       </div>
-    </div>
+      </div>
+    </MainLayout>
   );
 };

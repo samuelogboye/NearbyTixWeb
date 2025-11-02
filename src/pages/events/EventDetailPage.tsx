@@ -245,7 +245,7 @@ export const EventDetailPage = () => {
                   <div className="rounded-lg bg-red-50 p-4 text-center">
                     <p className="text-lg font-semibold text-red-800">Sold Out</p>
                     <p className="mt-1 text-sm text-red-600">
-                      All {event.total_tickets} tickets have been sold
+                      All {event.total_tickets} ticket {event.total_tickets === 1 ? '' : 's'} have been sold
                     </p>
                   </div>
                 ) : (
@@ -272,7 +272,7 @@ export const EventDetailPage = () => {
                     </div>
                     {event.tickets_available < 10 && (
                       <p className="text-sm font-medium text-yellow-700">
-                        Only {event.tickets_available} tickets left!
+                        Only {event.tickets_available} {event.tickets_available < 2 ? 'ticket' : 'tickets'} left!
                       </p>
                     )}
                   </div>

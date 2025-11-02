@@ -20,7 +20,7 @@ export const CountdownTimer = ({
 }: CountdownTimerProps) => {
   const addToast = useUIStore((state) => state.addToast);
 
-  const { timeRemaining, isExpired, urgencyLevel, formattedTime } =
+  const { isExpired, urgencyLevel, formattedTime } =
     useCountdown(
       expiresAt,
       onExpire,

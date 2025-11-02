@@ -16,7 +16,7 @@ interface AuthState {
   logout: () => void;
   setUser: (user: User) => void;
   updateUserLocation: (latitude: number, longitude: number) => Promise<void>;
-  initializeAuth: () => void;
+  initializeAuth: () => Promise<void>;
   clearError: () => void;
 }
 
@@ -91,6 +91,11 @@ export const useAuthStore = create<AuthState>((set) => ({
       isAuthenticated: false,
       error: null,
     });
+
+    // Redirect to login page
+    if (typeof window !== 'undefined') {
+      window.location.href = '/login';
+    }
   },
 
   setUser: (user: User) => {
@@ -120,25 +125,48 @@ export const useAuthStore = create<AuthState>((set) => ({
     }
   },
 
-  initializeAuth: () => {
+  initializeAuth: async () => {
     const token = localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN);
     const userStr = localStorage.getItem(STORAGE_KEYS.USER);
 
-    if (token && userStr) {
-      try {
-        const user = JSON.parse(userStr) as User;
-        set({
-          user,
-          token,
-          isAuthenticated: true,
-        });
-      } catch (error) {
-        // Invalid stored data, clear it
-        localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
-        localStorage.removeItem(STORAGE_KEYS.USER);
+    if (token) {
+      // If we have a token but no user data, fetch from API
+      if (!userStr) {
+        try {
+          const user = await apiClient.getMe();
+          localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(user));
+          set({
+            user,
+            token,
+            isAuthenticated: true,
+          });
+        } catch (error) {
+          // Token is invalid, clear everything
+          localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
+          localStorage.removeItem(STORAGE_KEYS.USER);
+        }
+      } else {
+        // We have both token and user data
+        try {
+          const user = JSON.parse(userStr) as User;
+          set({
+            user,
+            token,
+            isAuthenticated: true,
+          });
+        } catch (error) {
+          // Invalid stored data, clear it
+          localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
+          localStorage.removeItem(STORAGE_KEYS.USER);
+        }
       }
     }
   },
 
   clearError: () => set({ error: null }),
 }));
+
+// Register logout callback with API client to handle 401 errors
+apiClient.setUnauthorizedCallback(() => {
+  useAuthStore.getState().logout();
+});

@@ -11,6 +11,7 @@ export const mockUser: User = {
   latitude: 40.7128,
   longitude: -74.0060,
   created_at: '2024-01-01T00:00:00Z',
+  updated_at: '2024-01-01T00:00:00Z',
 };
 
 export const mockAuthResponse: AuthResponse = {
@@ -21,6 +22,7 @@ export const mockAuthResponse: AuthResponse = {
 
 export const mockEvent: Event = {
   id: 'event-1',
+  creator_id: 'creator-1',
   title: 'Test Event',
   description: 'A test event description',
   start_time: '2025-12-01T18:00:00Z',
@@ -28,25 +30,18 @@ export const mockEvent: Event = {
   total_tickets: 100,
   tickets_sold: 20,
   tickets_available: 80,
-  venue: {
-    id: 'venue-1',
-    latitude: 40.7580,
-    longitude: -73.9855,
-    venue_name: 'Test Venue',
-    address_line1: '123 Test St',
-    address_line2: null,
-    city: 'New York',
-    state: 'NY',
-    country: 'USA',
-    postal_code: '10001',
-  },
-  creator: {
-    id: 'creator-1',
-    name: 'Event Creator',
-    email: 'creator@example.com',
-  },
+  is_sold_out: false,
+  latitude: 40.7580,
+  longitude: -73.9855,
+  venue_name: 'Test Venue',
+  address_line1: '123 Test St',
+  address_line2: null,
+  city: 'New York',
+  state: 'NY',
+  country: 'USA',
+  postal_code: '10001',
   created_at: '2024-01-01T00:00:00Z',
-  distance_km: 5.2,
+  updated_at: '2024-01-01T00:00:00Z',
 };
 
 export const mockTicket: Ticket = {
@@ -55,12 +50,12 @@ export const mockTicket: Ticket = {
   user_id: 'user-1',
   status: 'reserved',
   expires_at: '2025-12-01T18:02:00Z',
+  paid_at: null,
   created_at: '2025-12-01T18:00:00Z',
   event: {
     id: 'event-1',
     title: 'Test Event',
     start_time: '2025-12-01T18:00:00Z',
-    end_time: '2025-12-01T22:00:00Z',
     venue_name: 'Test Venue',
     city: 'New York',
     state: 'NY',

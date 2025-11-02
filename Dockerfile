@@ -26,4 +26,4 @@ COPY --from=builder /app ./
 EXPOSE 5173
 
 # Run Vite's production preview server
-CMD ["npm", "run", "preview", "--", "--host", "--port", "5173"]
+CMD ["npm", "run", "preview", "--", "--host", "0.0.0.0", "--port", "5173"]

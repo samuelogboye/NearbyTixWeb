@@ -27,10 +27,7 @@ export const TicketDetailPage = () => {
 
   // Handle ticket expiration
   const handleExpire = () => {
-    addToast({
-      type: 'warning',
-      message: 'Your ticket reservation has expired',
-    });
+    addToast('warning', 'Your ticket reservation has expired');
     // Refresh ticket data
     if (id) {
       fetchTicket(id);
@@ -40,10 +37,7 @@ export const TicketDetailPage = () => {
   // Show error toast
   useEffect(() => {
     if (error) {
-      addToast({
-        type: 'error',
-        message: error,
-      });
+      addToast('error', error);
     }
   }, [error, addToast]);
 
@@ -51,7 +45,11 @@ export const TicketDetailPage = () => {
     return (
       <div className="min-h-screen bg-gray-50 py-8">
         <div className="container mx-auto px-4 max-w-4xl">
-          <LoadingSkeleton count={8} height={60} />
+          <div className="space-y-4">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <LoadingSkeleton key={i} height="60px" />
+            ))}
+          </div>
         </div>
       </div>
     );
@@ -139,7 +137,7 @@ export const TicketDetailPage = () => {
               <h1 className="text-3xl font-bold text-gray-900">{ticket.event.title}</h1>
               <p className="text-gray-600 mt-1">Ticket ID: {ticket.id}</p>
             </div>
-            <TicketStatusBadge status={ticket.status} size="lg" />
+            <TicketStatusBadge status={ticket.status} size="md" />
           </div>
         </div>
 

@@ -70,72 +70,73 @@ export const Header = () => {
           {/* Desktop User Menu / Auth Buttons */}
           <div className="hidden items-center space-x-4 md:flex">
             {isAuthenticated && user ? (
-              <div className="relative">
-                <button
-                  onClick={() => setIsMenuOpen(!isMenuOpen)}
-                  className="flex items-center space-x-2 rounded-lg px-3 py-2 text-gray-700 transition-colors hover:bg-gray-100"
-                >
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary-100 text-primary-600">
-                    <span className="text-sm font-semibold">
-                      {user.name.charAt(0).toUpperCase()}
-                    </span>
-                  </div>
-                  <span className="text-sm font-medium">{user.name}</span>
-                  <svg
-                    className={`h-4 w-4 transition-transform ${isMenuOpen ? 'rotate-180' : ''}`}
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
+              <>
+                <div className="relative">
+                  <button
+                    onClick={() => setIsMenuOpen(!isMenuOpen)}
+                    className="flex items-center space-x-2 rounded-lg px-3 py-2 text-gray-700 transition-colors hover:bg-gray-100"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </svg>
-                </button>
-
-                {/* Dropdown Menu */}
-                {isMenuOpen && (
-                  <>
-                    <div
-                      className="fixed inset-0 z-10"
-                      onClick={() => setIsMenuOpen(false)}
-                    />
-                    <div className="absolute right-0 z-20 mt-2 w-48 rounded-lg border border-gray-200 bg-white py-1 shadow-lg">
-                      <Link
-                        to={ROUTES.PROFILE}
-                        onClick={() => setIsMenuOpen(false)}
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                      >
-                        Profile
-                      </Link>
-                      <Link
-                        to={ROUTES.MY_TICKETS}
-                        onClick={() => setIsMenuOpen(false)}
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                      >
-                        My Tickets
-                      </Link>
-                      <Link
-                        to={ROUTES.MY_EVENTS}
-                        onClick={() => setIsMenuOpen(false)}
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                      >
-                        My Events
-                      </Link>
-                      <hr className="my-1" />
-                      <button
-                        onClick={handleLogout}
-                        className="block w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-gray-100"
-                      >
-                        Sign out
-                      </button>
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary-100 text-primary-600">
+                      <span className="text-sm font-semibold">
+                        {user.name.charAt(0).toUpperCase()}
+                      </span>
                     </div>
-                  </>
-                )}
-              </div>
+                    <span className="text-sm font-medium">{user.name}</span>
+                    <svg
+                      className={`h-4 w-4 transition-transform ${isMenuOpen ? 'rotate-180' : ''}`}
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
+                  </button>
+
+                  {/* Dropdown Menu */}
+                  {isMenuOpen && (
+                    <>
+                      <div
+                        className="fixed inset-0 z-10"
+                        onClick={() => setIsMenuOpen(false)}
+                      />
+                      <div className="absolute right-0 z-20 mt-2 w-48 rounded-lg border border-gray-200 bg-white py-1 shadow-lg">
+                        <Link
+                          to={ROUTES.PROFILE}
+                          onClick={() => setIsMenuOpen(false)}
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        >
+                          Profile
+                        </Link>
+                        <Link
+                          to={ROUTES.MY_TICKETS}
+                          onClick={() => setIsMenuOpen(false)}
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        >
+                          My Tickets
+                        </Link>
+                        <Link
+                          to={ROUTES.MY_EVENTS}
+                          onClick={() => setIsMenuOpen(false)}
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        >
+                          My Events
+                        </Link>
+                      </div>
+                    </>
+                  )}
+                </div>
+                <button
+                  onClick={handleLogout}
+                  className="rounded-lg bg-red-600 px-4 py-2 text-white transition-colors hover:bg-red-700 font-medium"
+                >
+                  Logout
+                </button>
+              </>
             ) : (
               <>
                 <Link
@@ -183,6 +184,21 @@ export const Header = () => {
         {isMobileMenuOpen && (
           <div className="border-t border-gray-200 py-4 md:hidden">
             <div className="space-y-1">
+              {/* User Info (Mobile) */}
+              {isAuthenticated && user && (
+                <div className="flex items-center space-x-3 px-3 py-3 mb-2 bg-gray-50 rounded-lg">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-100 text-primary-600">
+                    <span className="text-sm font-semibold">
+                      {user.name.charAt(0).toUpperCase()}
+                    </span>
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-sm font-medium text-gray-900">{user.name}</p>
+                    <p className="text-xs text-gray-500">{user.email}</p>
+                  </div>
+                </div>
+              )}
+
               <Link
                 to={ROUTES.EVENTS}
                 onClick={() => setIsMobileMenuOpen(false)}
@@ -222,15 +238,17 @@ export const Header = () => {
                   >
                     My Events
                   </Link>
-                  <button
-                    onClick={() => {
-                      handleLogout();
-                      setIsMobileMenuOpen(false);
-                    }}
-                    className="block w-full rounded-lg px-3 py-2 text-left text-red-600 hover:bg-gray-100"
-                  >
-                    Sign out
-                  </button>
+                  <div className="pt-2 mt-2 border-t border-gray-200">
+                    <button
+                      onClick={() => {
+                        handleLogout();
+                        setIsMobileMenuOpen(false);
+                      }}
+                      className="block w-full rounded-lg px-3 py-2 text-center bg-red-600 text-white hover:bg-red-700 font-medium"
+                    >
+                      Logout
+                    </button>
+                  </div>
                 </>
               )}
               {!isAuthenticated && (

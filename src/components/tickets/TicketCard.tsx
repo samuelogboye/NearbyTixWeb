@@ -18,36 +18,36 @@ export const TicketCard = ({
 }: TicketCardProps) => {
   const isReserved = ticket.status === 'reserved';
   const isPaid = ticket.status === 'paid';
-  console.log("ticket", ticket)
-  // Defensive check - ensure event data is available
-  if (!ticket.event) {
-    return (
-      <Card variant="bordered" className="hover:shadow-lg transition-shadow">
-        <div className="space-y-4">
-          <div className="flex items-start justify-between">
-            <div className="flex-1">
-              <h3 className="text-lg font-semibold text-gray-900">
-                Event Information Unavailable
-              </h3>
-              <p className="text-sm text-gray-600 mt-1">
-                Ticket ID: {ticket.id.substring(0, 8)}...
-              </p>
-            </div>
-            <TicketStatusBadge status={ticket.status} />
-          </div>
-          <p className="text-sm text-gray-500">
-            Unable to load event details. Please try refreshing the page.
-          </p>
-          <Link
-            to={`/tickets/${ticket.id}`}
-            className="block text-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-medium text-sm"
-          >
-            View Details
-          </Link>
-        </div>
-      </Card>
-    );
-  }
+
+  // // Defensive check - ensure event data is available
+  // if (!ticket.event) {
+  //   return (
+  //     <Card variant="bordered" className="hover:shadow-lg transition-shadow">
+  //       <div className="space-y-4">
+  //         <div className="flex items-start justify-between">
+  //           <div className="flex-1">
+  //             <h3 className="text-lg font-semibold text-gray-900">
+  //               Event Information Unavailable
+  //             </h3>
+  //             <p className="text-sm text-gray-600 mt-1">
+  //               Ticket ID: {ticket.id.substring(0, 8)}...
+  //             </p>
+  //           </div>
+  //           <TicketStatusBadge status={ticket.status} />
+  //         </div>
+  //         <p className="text-sm text-gray-500">
+  //           Unable to load event details. Please try refreshing the page.
+  //         </p>
+  //         <Link
+  //           to={`/tickets/${ticket.id}`}
+  //           className="block text-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-medium text-sm"
+  //         >
+  //           View Details
+  //         </Link>
+  //       </div>
+  //     </Card>
+  //   );
+  // }
 
   return (
     <Card variant="bordered" className="hover:shadow-lg transition-shadow">
@@ -56,11 +56,11 @@ export const TicketCard = ({
         <div className="flex items-start justify-between">
           <div className="flex-1">
             <h3 className="text-lg font-semibold text-gray-900">
-              {ticket.event.title}
+              {ticket.event_title}
             </h3>
-            <p className="text-sm text-gray-600 mt-1">
+            {/* <p className="text-sm text-gray-600 mt-1">
               {ticket.event.venue_name}
-            </p>
+            </p> */}
           </div>
           <TicketStatusBadge status={ticket.status} />
         </div>
@@ -80,11 +80,11 @@ export const TicketCard = ({
               d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"
             />
           </svg>
-          <span>{formatDateTime(ticket.event.start_time)}</span>
+          <span>{formatDateTime(ticket.event_start_time ? ticket.event_start_time : '')}</span>
         </div>
 
         {/* Location */}
-        {(ticket.event.city || ticket.event.state) && (
+        {/* {(ticket.event.city || ticket.event.state) && (
           <div className="flex items-center gap-2 text-sm text-gray-700">
             <svg
               className="h-4 w-4 text-gray-400"
@@ -110,7 +110,7 @@ export const TicketCard = ({
                 : ticket.event.city || ticket.event.state}
             </span>
           </div>
-        )}
+        )} */}
 
         {/* Countdown Timer for Reserved Tickets */}
         {isReserved && showCountdown && ticket.expires_at && (

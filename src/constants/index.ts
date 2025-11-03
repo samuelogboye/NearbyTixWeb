@@ -30,6 +30,13 @@ export const ROUTES = {
   CREATE_EVENT: '/events/create',
   MY_EVENTS: '/my-events',
   PROFILE: '/profile',
+  // Static Pages
+  ABOUT: '/about',
+  CONTACT: '/contact',
+  PRIVACY: '/privacy',
+  TERMS: '/terms',
+  COOKIES: '/cookies',
+  SUPPORT: '/support',
 } as const;
 
 // Pagination Defaults

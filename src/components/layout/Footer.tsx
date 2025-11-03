@@ -54,9 +54,9 @@ export const Footer = () => {
                 </Link>
               </li>
               <li>
-                <a href="#pricing" className="text-gray-600 hover:text-primary-600">
-                  Pricing
-                </a>
+                <Link to={ROUTES.MY_TICKETS} className="text-gray-600 hover:text-primary-600">
+                  My Tickets
+                </Link>
               </li>
             </ul>
           </div>
@@ -66,24 +66,19 @@ export const Footer = () => {
             <h3 className="mb-4 text-sm font-semibold text-gray-900">Company</h3>
             <ul className="space-y-3 text-sm">
               <li>
-                <a href="#about" className="text-gray-600 hover:text-primary-600">
+                <Link to={ROUTES.ABOUT} className="text-gray-600 hover:text-primary-600">
                   About Us
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#blog" className="text-gray-600 hover:text-primary-600">
-                  Blog
-                </a>
-              </li>
-              <li>
-                <a href="#careers" className="text-gray-600 hover:text-primary-600">
-                  Careers
-                </a>
-              </li>
-              <li>
-                <a href="#contact" className="text-gray-600 hover:text-primary-600">
+                <Link to={ROUTES.CONTACT} className="text-gray-600 hover:text-primary-600">
                   Contact
-                </a>
+                </Link>
+              </li>
+              <li>
+                <Link to={ROUTES.SUPPORT} className="text-gray-600 hover:text-primary-600">
+                  Help & Support
+                </Link>
               </li>
             </ul>
           </div>
@@ -93,24 +88,19 @@ export const Footer = () => {
             <h3 className="mb-4 text-sm font-semibold text-gray-900">Legal</h3>
             <ul className="space-y-3 text-sm">
               <li>
-                <a href="#privacy" className="text-gray-600 hover:text-primary-600">
+                <Link to={ROUTES.PRIVACY} className="text-gray-600 hover:text-primary-600">
                   Privacy Policy
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#terms" className="text-gray-600 hover:text-primary-600">
+                <Link to={ROUTES.TERMS} className="text-gray-600 hover:text-primary-600">
                   Terms of Service
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#cookies" className="text-gray-600 hover:text-primary-600">
+                <Link to={ROUTES.COOKIES} className="text-gray-600 hover:text-primary-600">
                   Cookie Policy
-                </a>
-              </li>
-              <li>
-                <a href="#support" className="text-gray-600 hover:text-primary-600">
-                  Support
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

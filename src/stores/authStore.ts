@@ -11,7 +11,7 @@ interface AuthState {
   error: string | null;
 
   // Actions
-  login: (credentials: LoginRequest) => Promise<void>;
+  login: (credentials: LoginRequest, rememberMe?: boolean) => Promise<void>;
   register: (data: RegisterRequest) => Promise<void>;
   logout: () => void;
   setUser: (user: User) => void;
@@ -20,6 +20,22 @@ interface AuthState {
   clearError: () => void;
 }
 
+// Helper function to get the appropriate storage based on rememberMe preference
+const getStorage = (rememberMe: boolean = true): Storage => {
+  return rememberMe ? localStorage : sessionStorage;
+};
+
+// Helper function to get item from either storage
+const getStorageItem = (key: string): string | null => {
+  return localStorage.getItem(key) || sessionStorage.getItem(key);
+};
+
+// Helper function to remove item from both storages
+const removeStorageItem = (key: string): void => {
+  localStorage.removeItem(key);
+  sessionStorage.removeItem(key);
+};
+
 export const useAuthStore = create<AuthState>((set) => ({
   user: null,
   token: null,
@@ -27,17 +43,20 @@ export const useAuthStore = create<AuthState>((set) => ({
   isLoading: false,
   error: null,
 
-  login: async (credentials: LoginRequest) => {
+  login: async (credentials: LoginRequest, rememberMe: boolean = true) => {
     set({ isLoading: true, error: null });
     try {
       const response = await apiClient.login(credentials);
 
+      // Get the appropriate storage based on rememberMe preference
+      const storage = getStorage(rememberMe);
+
       // Store token first
-      localStorage.setItem(STORAGE_KEYS.ACCESS_TOKEN, response.access_token);
+      storage.setItem(STORAGE_KEYS.ACCESS_TOKEN, response.access_token);
 
       // Fetch full user data from /me endpoint
       const user = await apiClient.getMe();
-      localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(user));
+      storage.setItem(STORAGE_KEYS.USER, JSON.stringify(user));
 
       set({
         user,
@@ -86,9 +105,9 @@ export const useAuthStore = create<AuthState>((set) => ({
   },
 
   logout: () => {
-    // Clear storage
-    localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
-    localStorage.removeItem(STORAGE_KEYS.USER);
+    // Clear from both storages
+    removeStorageItem(STORAGE_KEYS.ACCESS_TOKEN);
+    removeStorageItem(STORAGE_KEYS.USER);
 
     // Reset state
     set({
@@ -105,7 +124,11 @@ export const useAuthStore = create<AuthState>((set) => ({
   },
 
   setUser: (user: User) => {
-    localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(user));
+    // Update in the same storage that has the token
+    const storage = localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN)
+      ? localStorage
+      : sessionStorage;
+    storage.setItem(STORAGE_KEYS.USER, JSON.stringify(user));
     set({ user });
   },
 
@@ -114,7 +137,11 @@ export const useAuthStore = create<AuthState>((set) => ({
     try {
       const updatedUser = await apiClient.updateLocation({ latitude, longitude });
 
-      localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(updatedUser));
+      // Update in the same storage that has the token
+      const storage = localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN)
+        ? localStorage
+        : sessionStorage;
+      storage.setItem(STORAGE_KEYS.USER, JSON.stringify(updatedUser));
 
       set({
         user: updatedUser,
@@ -132,15 +159,21 @@ export const useAuthStore = create<AuthState>((set) => ({
   },
 
   initializeAuth: async () => {
-    const token = localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN);
-    const userStr = localStorage.getItem(STORAGE_KEYS.USER);
+    // Check both localStorage and sessionStorage
+    const token = getStorageItem(STORAGE_KEYS.ACCESS_TOKEN);
+    const userStr = getStorageItem(STORAGE_KEYS.USER);
 
     if (token) {
+      // Determine which storage has the token
+      const storage = localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN)
+        ? localStorage
+        : sessionStorage;
+
       // If we have a token but no user data, fetch from API
       if (!userStr) {
         try {
           const user = await apiClient.getMe();
-          localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(user));
+          storage.setItem(STORAGE_KEYS.USER, JSON.stringify(user));
           set({
             user,
             token,
@@ -148,8 +181,8 @@ export const useAuthStore = create<AuthState>((set) => ({
           });
         } catch (error) {
           // Token is invalid, clear everything
-          localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
-          localStorage.removeItem(STORAGE_KEYS.USER);
+          removeStorageItem(STORAGE_KEYS.ACCESS_TOKEN);
+          removeStorageItem(STORAGE_KEYS.USER);
         }
       } else {
         // We have both token and user data
@@ -162,8 +195,8 @@ export const useAuthStore = create<AuthState>((set) => ({
           });
         } catch (error) {
           // Invalid stored data, clear it
-          localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
-          localStorage.removeItem(STORAGE_KEYS.USER);
+          removeStorageItem(STORAGE_KEYS.ACCESS_TOKEN);
+          removeStorageItem(STORAGE_KEYS.USER);
         }
       }
     }

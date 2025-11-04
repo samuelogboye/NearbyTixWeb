@@ -71,11 +71,13 @@ class ApiClient {
   }
 
   /**
-   * Get stored auth token
+   * Get stored auth token from either localStorage or sessionStorage
    */
   private getToken(): string | null {
     if (typeof window === 'undefined') return null;
-    return localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN);
+    // Check both localStorage and sessionStorage
+    return localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN) ||
+           sessionStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN);
   }
 
   /**

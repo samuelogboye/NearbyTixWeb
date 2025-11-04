@@ -56,7 +56,8 @@ export const HomePage = () => {
                     <Link to={ROUTES.EVENTS}>
                       <Button
                         size="lg"
-                        className="group relative overflow-hidden bg-white text-primary-600 shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl"
+                        variant="ghost"
+                        className="group relative overflow-hidden !bg-white !text-primary-600 shadow-lg transition-all duration-300 hover:!bg-gray-50 hover:scale-105 hover:shadow-2xl"
                       >
                         <span className="relative z-10 flex items-center gap-2">
                           Browse Events
@@ -69,7 +70,8 @@ export const HomePage = () => {
                     <Link to={ROUTES.FOR_YOU}>
                       <Button
                         size="lg"
-                        className="border-2 border-white bg-transparent text-white transition-all duration-300 hover:scale-105 hover:bg-white hover:text-primary-600 hover:shadow-lg"
+                        variant="ghost"
+                        className="!border-2 !border-white !bg-transparent !text-white transition-all duration-300 hover:!bg-white hover:!text-primary-600 hover:scale-105 hover:shadow-lg"
                       >
                         For You
                       </Button>
@@ -77,8 +79,8 @@ export const HomePage = () => {
                     <Link to={ROUTES.MY_TICKETS}>
                       <Button
                         size="lg"
-                        variant="secondary"
-                        className="bg-primary-500 text-white transition-all duration-300 hover:scale-105 hover:bg-primary-400 hover:shadow-lg"
+                        variant="ghost"
+                        className="!bg-primary-500 !text-white transition-all duration-300 hover:!bg-primary-400 hover:scale-105 hover:shadow-lg"
                       >
                         My Tickets
                       </Button>
@@ -90,7 +92,8 @@ export const HomePage = () => {
                   <Link to={ROUTES.REGISTER}>
                     <Button
                       size="lg"
-                      className="group relative overflow-hidden bg-white text-primary-600 shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl"
+                      variant="ghost"
+                      className="group relative overflow-hidden !bg-white !text-primary-600 shadow-lg transition-all duration-300 hover:!bg-gray-50 hover:scale-105 hover:shadow-2xl"
                     >
                       <span className="relative z-10 flex items-center gap-2">
                         Get Started Free
@@ -103,7 +106,8 @@ export const HomePage = () => {
                   <Link to={ROUTES.EVENTS}>
                     <Button
                       size="lg"
-                      className="border-2 border-white bg-transparent text-white transition-all duration-300 hover:scale-105 hover:bg-white hover:text-primary-600 hover:shadow-lg"
+                      variant="ghost"
+                      className="!border-2 !border-white !bg-transparent !text-white transition-all duration-300 hover:!bg-white hover:!text-primary-600 hover:scale-105 hover:shadow-lg"
                     >
                       Browse Events
                     </Button>
@@ -302,7 +306,8 @@ export const HomePage = () => {
                   <Link to={ROUTES.REGISTER}>
                     <Button
                       size="lg"
-                      className="bg-white text-primary-600 shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl"
+                      variant="ghost"
+                      className="!bg-white !text-primary-600 shadow-lg transition-all duration-300 hover:!bg-gray-50 hover:scale-105 hover:shadow-2xl"
                     >
                       Create Free Account
                     </Button>
@@ -310,7 +315,8 @@ export const HomePage = () => {
                   <Link to={ROUTES.EVENTS}>
                     <Button
                       size="lg"
-                      className="border-2 border-white bg-transparent text-white transition-all duration-300 hover:scale-105 hover:bg-white hover:text-primary-600 hover:shadow-lg"
+                      variant="ghost"
+                      className="!border-2 !border-white !bg-transparent !text-white transition-all duration-300 hover:!bg-white hover:!text-primary-600 hover:scale-105 hover:shadow-lg"
                     >
                       Explore Events
                     </Button>
@@ -321,7 +327,8 @@ export const HomePage = () => {
                 <Link to={ROUTES.EVENTS}>
                   <Button
                     size="lg"
-                    className="bg-white text-primary-600 shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl"
+                    variant="ghost"
+                    className="!bg-white !text-primary-600 shadow-lg transition-all duration-300 hover:!bg-gray-50 hover:scale-105 hover:shadow-2xl"
                   >
                     Discover Events Now
                   </Button>

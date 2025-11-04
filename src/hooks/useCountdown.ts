@@ -27,6 +27,7 @@ export function useCountdown(
   const [isPaused, setIsPaused] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const warningTriggered = useRef<Set<number>>(new Set());
+  const expireTriggered = useRef<boolean>(false);
 
   // Calculate time remaining
   const calculateTimeRemaining = useCallback((): number => {
@@ -97,12 +98,16 @@ export function useCountdown(
       return;
     }
 
+    // Reset expire trigger when expiresAt changes (new ticket)
+    expireTriggered.current = false;
+
     // Initial calculation
     const remaining = calculateTimeRemaining();
     setTimeRemaining(remaining);
 
     if (remaining <= 0) {
-      if (onExpire) {
+      if (onExpire && !expireTriggered.current) {
+        expireTriggered.current = true;
         onExpire();
       }
       return;
@@ -122,7 +127,8 @@ export function useCountdown(
           clearInterval(intervalRef.current);
           intervalRef.current = null;
         }
-        if (onExpire) {
+        if (onExpire && !expireTriggered.current) {
+          expireTriggered.current = true;
           onExpire();
         }
       }

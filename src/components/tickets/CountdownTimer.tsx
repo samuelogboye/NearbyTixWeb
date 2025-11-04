@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import clsx from 'clsx';
 import { useCountdown } from '@hooks/useCountdown';
 import { useUIStore } from '@stores/uiStore';
@@ -37,12 +36,7 @@ export const CountdownTimer = ({
         : undefined
     );
 
-  // Auto-show expiration message
-  useEffect(() => {
-    if (isExpired && showWarnings) {
-      addToast('error', '⏱️ Time expired! Your reservation has been released.', 5000);
-    }
-  }, [isExpired, showWarnings, addToast]);
+  // Note: Expiration toast is handled by the onExpire callback to avoid duplicates
 
   if (!expiresAt) {
     return null;
